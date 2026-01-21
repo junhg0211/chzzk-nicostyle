@@ -1,8 +1,10 @@
 {
+  "name": "Chzzk-Nicostyle",
   "type": "module",
   "scripts": {
     "start": "node server.js"
   },
+  "bin": "./server.js",
   "dependencies": {
     "dotenv": "^17.2.3",
     "socket.io-client": "2.0.3",
