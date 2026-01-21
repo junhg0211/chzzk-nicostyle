@@ -1,13 +1,59 @@
 <!doctype html>
 <html>
   <head>
-    <script type="module">
-      import { connectSession } from "./main.js";
+    <style>
+      body {
+        font-family: "SUIT", sans-serif;
+      }
 
-      connectSession();
-    </script>
+      .cloud {
+        position: absolute;
+        animation: floatUp linear forwards;
+        width: max-content;
+        color: white;
+        text-shadow: 0 0 4px black;
+      }
+
+      @keyframes floatUp {
+        0% {
+          left: 100vw;
+          transform: translateX(0);
+        }
+
+        100% {
+          left: 0;
+          transform: translateX(-100%);
+        }
+      }
+    </style>
+    <title>Chzzk Chat</title>
   </head>
   <body>
-    <div>hello, world!</div>
+    <div class="clouds"></div>
+    <script type="module">
+      const socket = new WebSocket(`ws://${window.location.host}`);
+
+      socket.addEventListener("message", (event) => {
+        const chat = JSON.parse(event.data).content;
+
+        createCloud(chat);
+      });
+
+      const clouds = document.querySelector(".clouds");
+      function createCloud(chat) {
+        const cloud = document.createElement("div");
+        const duration = 3 + 1 / chat.length;
+        cloud.innerText = chat;
+        cloud.classList.add("cloud");
+        cloud.style.top = `${Math.random() * 90}vh`;
+        cloud.style.animationDuration = `${duration}s`;
+        clouds.appendChild(cloud);
+        setTimeout(() => {
+          clouds.removeChild(cloud);
+        }, duration * 1000);
+
+        console.log("Cloud created: ", chat, cloud.style.top, duration);
+      }
+    </script>
   </body>
 </html>
