@@ -5,3 +5,4 @@ node_modules/
 
 access_token.json
 auth_data.json
+.DS_Store
