@@ -165,7 +165,7 @@ async function main() {
       );
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
       res.end(
-        "인증 데이터가 성공적으로 저장되었습니다. 이제 채팅을 확인할 수 있습니다.",
+        "인증 데이터가 성공적으로 저장되었습니다. 프로그램을 다시 시작해주세요.",
       );
       return;
     }
