@@ -1,0 +1,7 @@
+node_modules/
+.env
+.venv
+
+
+access_token.json
+auth_data.json

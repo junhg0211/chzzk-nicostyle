@@ -1,0 +1,2 @@
+https://chzzk.naver.com/account-interlock?clientId=1e6526a8-236f-4f4f-9a13-93b87862d5a4&redirectUri=http%3A//localhost%3A3000/auth/callback&state=12345
+
