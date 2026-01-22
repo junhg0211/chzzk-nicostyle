@@ -1,0 +1,7 @@
+{
+  "outfile": "chzzk-nicostyle.exe",
+  "icon": "res/icon.ico",
+  "targets": [
+    "windows10"
+  ]
+}
