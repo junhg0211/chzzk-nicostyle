@@ -11,3 +11,5 @@ server
 
 dist/
 build/
+
+server.obf.js
