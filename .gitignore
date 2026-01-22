@@ -1,5 +1,5 @@
 node_modules/
-.env
+env.js
 .venv
 
 access_token.json
@@ -8,3 +8,6 @@ auth_data.json
 
 server.exe
 server
+
+dist/
+build/

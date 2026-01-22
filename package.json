@@ -14,5 +14,8 @@
     "dotenv": "^17.2.3",
     "socket.io-client": "2.0.3",
     "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^5.1.0"
   }
 }

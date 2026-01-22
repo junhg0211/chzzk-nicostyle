@@ -1,12 +1,11 @@
 import fs from "fs";
-import dotenv from "dotenv";
 import io from "socket.io-client";
 import http from "http";
 import path from "path";
 import url from "url";
 import { WebSocketServer } from "ws";
 
-dotenv.config();
+import env from "./env.js";
 
 const API_BASE_URL = "https://openapi.chzzk.naver.com";
 
@@ -29,8 +28,8 @@ async function getAccessToken() {
   const authData = JSON.parse(fs.readFileSync("auth_data.json", "utf-8"));
   const { code, state } = authData;
 
-  const clientId = process.env.CLIENT_ID;
-  const clientSecret = process.env.CLIENT_SECRET;
+  const clientId = env.CLIENT_ID;
+  const clientSecret = env.CLIENT_SECRET;
 
   const payload = {
     grantType: "authorization_code",
@@ -112,8 +111,8 @@ async function createClientSession() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Client-Id": process.env.CLIENT_ID,
-      "Client-Secret": process.env.CLIENT_SECRET,
+      "Client-Id": env.CLIENT_ID,
+      "Client-Secret": env.CLIENT_SECRET,
     },
   });
   const json = await res.json();
@@ -130,8 +129,8 @@ async function main() {
     const pathname = parsedUrl.pathname;
 
     if (pathname === "/") {
-      const clientId = encodeURIComponent(process.env.CLIENT_ID);
-      const redirectUri = encodeURIComponent(process.env.REDIRECT_URI);
+      const clientId = encodeURIComponent(env.CLIENT_ID);
+      const redirectUri = encodeURIComponent(env.REDIRECT_URI);
       const state = "0"; // As in server.py
       const chzzkAuthUrl = `https://chzzk.naver.com/account-interlock?clientId=${clientId}&redirectUri=${redirectUri}&state=${state}`;
       res.writeHead(302, { Location: chzzkAuthUrl });
