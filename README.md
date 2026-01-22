@@ -32,7 +32,9 @@ Chzzk-Nicostyle은 치지직 채팅을 니코니코 동화 스타일로 화면�
 ## 빌드 방법
 
 ```
-bun build server.js --compile --windows-icon res/icon.ico
+bun add -d javascript-obfuscator
+bunx javascript-obfuscator --compact true --control-flow-flattening true --string-array true --string-array-encoding base64 --rename-globals true -o server.obf.js server.js
+bun build server.obf.js --compile --windows-icon res/icon.ico
 ```
 
 ## 기여 방법
