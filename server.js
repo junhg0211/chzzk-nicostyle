@@ -16,7 +16,6 @@ async function getAccessToken() {
     const data = JSON.parse(
       fs.readFileSync("access_token.json", "utf-8"),
     ).content;
-    console.log("Access token loaded from file:", data);
     return data;
   }
 
@@ -48,11 +47,9 @@ async function getAccessToken() {
   });
 
   const json = await res.json();
-  console.log(json);
 
   if (res.ok) {
     fs.writeFileSync("access_token.json", JSON.stringify(json, null, 2));
-    console.log('Access token saved to "access_token.json"');
   }
 
   return json.content;
@@ -75,20 +72,11 @@ export async function connectSession(wss) {
 
   const socket = io.connect(sessionURL, socketOption);
 
-  socket.on("connect", () => {
-    console.log("WebSocket connected.");
-  });
-
   socket.on("SYSTEM", (data) => {
     data = JSON.parse(data);
 
     if (data.type === "connected") {
-      console.log("Session connected:", data);
       sessionKey = data.data.sessionKey;
-
-      console.log("Subscribing to chat events...");
-      console.log("Session Key:", sessionKey);
-      console.log("body:", { sessionKey });
 
       fetch(
         `${API_BASE_URL}/open/v1/sessions/events/subscribe/chat?sessionKey=${sessionKey}`,
@@ -99,20 +87,14 @@ export async function connectSession(wss) {
             Authorization: `Bearer ${token.accessToken}`,
           },
         },
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          console.log("Subscribed to chat events:", json);
-        })
-        .catch((err) => {
-          console.error("Error subscribing to chat events:", err);
-        });
+      ).catch((err) => {
+        console.error("Error subscribing to chat events:", err);
+      });
     }
   });
 
   socket.on("CHAT", (data) => {
     data = JSON.parse(data);
-    console.log(data.content);
     // Broadcast to all connected clients
     wss.clients.forEach((client) => {
       if (client.readyState === client.OPEN) {
@@ -193,11 +175,6 @@ async function main() {
   });
 
   const wss = new WebSocketServer({ server });
-
-  wss.on("connection", (ws) => {
-    console.log("Client connected");
-    ws.on("close", () => console.log("Client disconnected"));
-  });
 
   server.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}/`);
