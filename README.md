@@ -29,6 +29,12 @@ Chzzk-Nicostyle은 치지직 채팅을 니코니코 동화 스타일로 화면�
 }
 ```
 
+## 빌드 방법
+
+```
+bun build server.js --compile --windows-icon res/icon.ico
+```
+
 ## 기여 방법
 
 1. 저장소를 포크합니다.
