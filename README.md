@@ -23,7 +23,9 @@ Chzzk-Nicostyle은 치지직 채팅을 니코니코 동화 스타일로 화면�
     font-family: 'SUIT', sans-serif;  /* 글씨체 */
     font-size: 24px;                  /* 글씨 크기 */
     color: #FFFFFF;                   /* 글씨 색상 */
-    text-shadow: 0 0 10px black;      /* 글씨에 그림자 효과 추가 */
+    text-shadow: 0 0 10px #000000;    /* 글씨에 그림자 효과 추가 */
+
+    /* 등등, CSS 문법을 활용하여 다양한 스타일을 적용할 수 있습니다. */
 }
 ```
 
