@@ -100,6 +100,7 @@ export async function connectSession(wss) {
         client.send(JSON.stringify(data));
       }
     });
+    console.log(data);
   });
 
   return socket;
@@ -176,7 +177,7 @@ async function main() {
   const wss = new WebSocketServer({ server });
 
   server.listen(port, host, () => {
-    console.log(`Server running at http://${host}:${port}/`);
+    console.log(`Server running at http://${host}:${port}/app`);
   });
 
   // Delay connection until authentication is likely complete
