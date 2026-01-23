@@ -7,6 +7,71 @@ import { WebSocketServer } from "ws";
 
 import env from "./env.js";
 
+const indexHTML = `<!doctype html>
+<html>
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "SUIT Variable", "SUIT", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .cloud {
+        position: absolute;
+        animation: floatUp linear forwards;
+        width: max-content;
+        color: white;
+        text-shadow: 0 0 10px black;
+      }
+
+      @keyframes floatUp {
+        0% {
+          left: 100vw;
+          transform: translateX(0);
+        }
+
+        100% {
+          left: 0;
+          transform: translateX(-100%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clouds"></div>
+    <script type="module">
+      const socket = new WebSocket("ws://" + window.location.host);
+
+      socket.addEventListener("message", (event) => {
+        const chat = JSON.parse(event.data).content;
+
+        createCloud(chat);
+      });
+
+      const clouds = document.querySelector(".clouds");
+      function createCloud(chat) {
+        const cloud = document.createElement("div");
+        const duration = 3 + 1 / chat.length;
+        cloud.innerText = chat;
+        cloud.classList.add("cloud");
+        cloud.style.top = Math.random() * 90 + "vh";
+        cloud.style.animationDuration = duration + "s";
+        clouds.appendChild(cloud);
+        setTimeout(() => {
+          clouds.removeChild(cloud);
+        }, duration * 1000);
+
+        console.log("Cloud created: ", chat, cloud.style.top, duration);
+      }
+    </script>
+  </body>
+</html>
+`;
+
 const API_BASE_URL = "https://openapi.chzzk.naver.com";
 
 /* access token 가져오기 */
@@ -122,7 +187,7 @@ async function createClientSession() {
 
 /* 메인 */
 async function main() {
-  const host = "0.0.0.0";
+  const host = "localhost";
   const port = 3000;
 
   const server = http.createServer((req, res) => {
@@ -153,25 +218,10 @@ async function main() {
     }
 
     // Serve index.html on /app
-    const filePath = pathname === "/app" ? "/index.html" : pathname;
-    const ext = path.extname(filePath).toLowerCase();
-    const physicalPath = `.${filePath}`;
-
-    const contentType =
-      {
-        ".html": "text/html",
-        ".js": "application/javascript",
-        ".css": "text/css",
-      }[ext] || "application/octet-stream";
-
-    if (fs.existsSync(physicalPath)) {
-      res.writeHead(200, { "Content-Type": contentType });
-      fs.createReadStream(physicalPath).pipe(res);
-      return;
-    }
-
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("404 Not Found");
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write(indexHTML);
+    res.end();
+    return;
   });
 
   const wss = new WebSocketServer({ server });
